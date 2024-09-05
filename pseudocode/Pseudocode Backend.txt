@@ -1,0 +1,41 @@
+APP START:
+    INITIALIZE server with Express.js
+    SETUP customer registration route
+    SETUP transaction route
+
+FUNCTION registerCustomerEndpoint(request, response):
+    CALL registerCustomer(request.body)
+    RETURN registration result
+
+FUNCTION createTransactionEndpoint(request, response):
+    CALL createTransaction(request.body)
+    RETURN transaction result
+
+// Services for registration and transaction
+crmServiceRegister(customerData):
+    SEND customerData to CRM API
+    RETURN CRM response
+
+erpServiceRegister(customerData):
+    SEND customerData to ERP API
+    RETURN ERP response
+
+posServiceRegister(customerData):
+    SEND customerData to POS API
+    RETURN POS response
+
+erpServiceTransaction(transactionData):
+    SEND transactionData to ERP API for invoice creation
+    RETURN ERP response
+
+crmServiceTransaction(transactionData):
+    SEND transactionData to CRM API for updating member points
+    RETURN CRM response
+
+
+
+Penjelasan :
+1. APP START: Server Express.js diinisialisasi, dan rute untuk registrasi dan transaksi disiapkan.
+2. registerCustomerEndpoint: Endpoint untuk registrasi customer yang memanggil registerCustomer.
+3. createTransactionEndpoint: Endpoint untuk membuat transaksi yang memanggil createTransaction.
+4. Service Functions: Setiap service berkomunikasi dengan API eksternal (CRM, ERP, POS) menggunakan fungsi axios.post untuk mengirim data.

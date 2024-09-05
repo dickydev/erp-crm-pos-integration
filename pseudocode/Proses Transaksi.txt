@@ -1,0 +1,19 @@
+FUNCTION createTransaction(transactionData):
+    // Step 1: Send transaction data to ERP for invoice creation
+    erpResponse = CALL erpServiceTransaction(transactionData)
+    
+    IF erpResponse.success:
+        // Step 2: Update member points in CRM
+        crmResponse = CALL crmServiceTransaction(transactionData)
+        
+        IF crmResponse.success:
+            RETURN "Transaction completed", erpResponse, crmResponse
+        ELSE:
+            RETURN "Error in updating CRM member points", crmResponse.error
+    ELSE:
+        RETURN "Error in creating ERP invoice", erpResponse.error
+
+Penjelasan:
+1. Kirim data transaksi ke sistem ERP untuk membuat invoice.
+2. Jika pembuatan invoice di ERP berhasil, update poin member di CRM berdasarkan transaksi.
+3. Handling Errors: Jika ada kesalahan di salah satu tahap, proses berhenti dan memberikan pesan kesalahan.

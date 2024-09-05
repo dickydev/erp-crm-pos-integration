@@ -1,0 +1,27 @@
+FUNCTION registerCustomer(customerData):
+    // Step 1: Register customer in CRM
+    crmResponse = CALL crmServiceRegister(customerData)
+    
+    IF crmResponse.success:
+        // Step 2: Send customer data to ERP
+        erpResponse = CALL erpServiceRegister(crmResponse.data)
+        
+        IF erpResponse.success:
+            // Step 3: Send customer data to POS
+            posResponse = CALL posServiceRegister(crmResponse.data)
+            
+            IF posResponse.success:
+                RETURN "Customer registration completed", crmResponse, erpResponse, posResponse
+            ELSE:
+                RETURN "Error in updating POS system", posResponse.error
+        ELSE:
+            RETURN "Error in updating ERP system", erpResponse.error
+    ELSE:
+        RETURN "Error in registering customer to CRM", crmResponse.error
+
+
+Penjelasan:
+1. Mengirim data customer ke sistem CRM untuk registrasi.
+2. Jika registrasi berhasil, kirim data ke ERP untuk mencatat customer.
+3. Jika pengiriman ke ERP berhasil, kirim data ke POS untuk memperbarui customer.
+4. Handling Errors: Jika ada kesalahan di setiap tahap, proses berhenti dan mengembalikan pesan kesalahan yang sesuai.
